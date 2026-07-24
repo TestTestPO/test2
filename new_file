@@ -1,1 +1,1023 @@
-asdf asdf 
+'use client';
+import { ViewState } from '@/features/edit/control-md-view-state';
+import { FC, useCallback } from 'react';
+import { ContentFileViewerProps } from '@/widgets/content/types';
+
+import { useTheme } from '@/shared/lib/theme-context';
+
+
+import { CodeViewer } from '@sbt_gitverse/code-editor/modules/CodeViewer/index';
+import { useRouterFn } from '@/shared/hooks/use-router-fn';
+import copyToClipboard from 'copy-to-clipboard';
+import { useBlobContext } from '../lib/blob-context';
+import { Markup } from '@/widgets/markup';
+import { getSupportedLanguage } from '@sbt_gitverse/code-editor/utils/getSupportedLanguage';
+
+import { getDocumentFormatByFileName } from '@/widgets/markup/utils';
+
+export const ContentFileViewer: FC<
+  Omit<ContentFileViewerProps, 'repo' | 'user'>
+> = ({ fileContent: file, filePath: filepath, language, viewState, isTag }) => {
+  const { pathname, hash } = useRouterFn();
+  const { resolvedTheme } = useTheme();
+  const { refName, repo, user } = useBlobContext();
+  const fileType = getDocumentFormatByFileName(filepath);
+  const isDarkTheme = resolvedTheme === 'dark';
+  const lineNumber = Number(hash.match(/\d+$/)?.[0] ?? 0);
+
+  const handleCopyClick = useCallback(
+    (line: number) => {
+      copyToClipboard(
+        `${window.location.origin}${pathname}?v=${viewState}#line-${line + 1}`,
+      );
+    },
+    [pathname, viewState],
+  );
+
+  if ((!file || !language) && viewState !== 'content') {
+    return null;
+  }
+
+  if (viewState === ViewState.EDIT && !!file) {
+    return (
+      <CodeViewer
+        className="rounded-8 border-bd-primary dark:selection:bg-bg-accent/20 border py-4"
+        content={file}
+        language={getSupportedLanguage(language || '')}
+        theme={isDarkTheme ? 'gitverse-dark' : 'gitverse-light'}
+        fallbackTheme="gitverse-light"
+        scrollToLine={lineNumber}
+        onCopyLink={handleCopyClick}
+        isScrollEnabled
+        scrollMargin={265}
+      />
+    );
+  }
+
+  return (
+    <div className="rounded-8 border-bd-primary border">
+      <Markup
+        type={fileType}
+        className="p-8"
+        context={{
+          owner: user,
+          repo,
+          filepath,
+          branch: !isTag ? refName : undefined,
+          tag: isTag ? refName : undefined,
+        }}
+      >
+        {file}
+      </Markup>
+    </div>
+  );
+};'use client';
+import { ViewState } from '@/features/edit/control-md-view-state';
+import { FC, useCallback } from 'react';
+import { ContentFileViewerProps } from '@/widgets/content/types';
+
+import { useTheme } from '@/shared/lib/theme-context';
+
+
+import { CodeViewer } from '@sbt_gitverse/code-editor/modules/CodeViewer/index';
+import { useRouterFn } from '@/shared/hooks/use-router-fn';
+import copyToClipboard from 'copy-to-clipboard';
+import { useBlobContext } from '../lib/blob-context';
+import { Markup } from '@/widgets/markup';
+import { getSupportedLanguage } from '@sbt_gitverse/code-editor/utils/getSupportedLanguage';
+
+import { getDocumentFormatByFileName } from '@/widgets/markup/utils';
+
+export const ContentFileViewer: FC<
+  Omit<ContentFileViewerProps, 'repo' | 'user'>
+> = ({ fileContent: file, filePath: filepath, language, viewState, isTag }) => {
+  const { pathname, hash } = useRouterFn();
+  const { resolvedTheme } = useTheme();
+  const { refName, repo, user } = useBlobContext();
+  const fileType = getDocumentFormatByFileName(filepath);
+  const isDarkTheme = resolvedTheme === 'dark';
+  const lineNumber = Number(hash.match(/\d+$/)?.[0] ?? 0);
+
+  const handleCopyClick = useCallback(
+    (line: number) => {
+      copyToClipboard(
+        `${window.location.origin}${pathname}?v=${viewState}#line-${line + 1}`,
+      );
+    },
+    [pathname, viewState],
+  );
+
+  if ((!file || !language) && viewState !== 'content') {
+    return null;
+  }
+
+  if (viewState === ViewState.EDIT && !!file) {
+    return (
+      <CodeViewer
+        className="rounded-8 border-bd-primary dark:selection:bg-bg-accent/20 border py-4"
+        content={file}
+        language={getSupportedLanguage(language || '')}
+        theme={isDarkTheme ? 'gitverse-dark' : 'gitverse-light'}
+        fallbackTheme="gitverse-light"
+        scrollToLine={lineNumber}
+        onCopyLink={handleCopyClick}
+        isScrollEnabled
+        scrollMargin={265}
+      />
+    );
+  }
+
+  return (
+    <div className="rounded-8 border-bd-primary border">
+      <Markup
+        type={fileType}
+        className="p-8"
+        context={{
+          owner: user,
+          repo,
+          filepath,
+          branch: !isTag ? refName : undefined,
+          tag: isTag ? refName : undefined,
+        }}
+      >
+        {file}
+      </Markup>
+    </div>
+  );
+};'use client';
+import { ViewState } from '@/features/edit/control-md-view-state';
+import { FC, useCallback } from 'react';
+import { ContentFileViewerProps } from '@/widgets/content/types';
+
+import { useTheme } from '@/shared/lib/theme-context';
+
+
+import { CodeViewer } from '@sbt_gitverse/code-editor/modules/CodeViewer/index';
+import { useRouterFn } from '@/shared/hooks/use-router-fn';
+import copyToClipboard from 'copy-to-clipboard';
+import { useBlobContext } from '../lib/blob-context';
+import { Markup } from '@/widgets/markup';
+import { getSupportedLanguage } from '@sbt_gitverse/code-editor/utils/getSupportedLanguage';
+
+import { getDocumentFormatByFileName } from '@/widgets/markup/utils';
+
+export const ContentFileViewer: FC<
+  Omit<ContentFileViewerProps, 'repo' | 'user'>
+> = ({ fileContent: file, filePath: filepath, language, viewState, isTag }) => {
+  const { pathname, hash } = useRouterFn();
+  const { resolvedTheme } = useTheme();
+  const { refName, repo, user } = useBlobContext();
+  const fileType = getDocumentFormatByFileName(filepath);
+  const isDarkTheme = resolvedTheme === 'dark';
+  const lineNumber = Number(hash.match(/\d+$/)?.[0] ?? 0);
+
+  const handleCopyClick = useCallback(
+    (line: number) => {
+      copyToClipboard(
+        `${window.location.origin}${pathname}?v=${viewState}#line-${line + 1}`,
+      );
+    },
+    [pathname, viewState],
+  );
+
+  if ((!file || !language) && viewState !== 'content') {
+    return null;
+  }
+
+  if (viewState === ViewState.EDIT && !!file) {
+    return (
+      <CodeViewer
+        className="rounded-8 border-bd-primary dark:selection:bg-bg-accent/20 border py-4"
+        content={file}
+        language={getSupportedLanguage(language || '')}
+        theme={isDarkTheme ? 'gitverse-dark' : 'gitverse-light'}
+        fallbackTheme="gitverse-light"
+        scrollToLine={lineNumber}
+        onCopyLink={handleCopyClick}
+        isScrollEnabled
+        scrollMargin={265}
+      />
+    );
+  }
+
+  return (
+    <div className="rounded-8 border-bd-primary border">
+      <Markup
+        type={fileType}
+        className="p-8"
+        context={{
+          owner: user,
+          repo,
+          filepath,
+          branch: !isTag ? refName : undefined,
+          tag: isTag ? refName : undefined,
+        }}
+      >
+        {file}
+      </Markup>
+    </div>
+  );
+};'use client';
+import { ViewState } from '@/features/edit/control-md-view-state';
+import { FC, useCallback } from 'react';
+import { ContentFileViewerProps } from '@/widgets/content/types';
+
+import { useTheme } from '@/shared/lib/theme-context';
+
+
+import { CodeViewer } from '@sbt_gitverse/code-editor/modules/CodeViewer/index';
+import { useRouterFn } from '@/shared/hooks/use-router-fn';
+import copyToClipboard from 'copy-to-clipboard';
+import { useBlobContext } from '../lib/blob-context';
+import { Markup } from '@/widgets/markup';
+import { getSupportedLanguage } from '@sbt_gitverse/code-editor/utils/getSupportedLanguage';
+
+import { getDocumentFormatByFileName } from '@/widgets/markup/utils';
+
+export const ContentFileViewer: FC<
+  Omit<ContentFileViewerProps, 'repo' | 'user'>
+> = ({ fileContent: file, filePath: filepath, language, viewState, isTag }) => {
+  const { pathname, hash } = useRouterFn();
+  const { resolvedTheme } = useTheme();
+  const { refName, repo, user } = useBlobContext();
+  const fileType = getDocumentFormatByFileName(filepath);
+  const isDarkTheme = resolvedTheme === 'dark';
+  const lineNumber = Number(hash.match(/\d+$/)?.[0] ?? 0);
+
+  const handleCopyClick = useCallback(
+    (line: number) => {
+      copyToClipboard(
+        `${window.location.origin}${pathname}?v=${viewState}#line-${line + 1}`,
+      );
+    },
+    [pathname, viewState],
+  );
+
+  if ((!file || !language) && viewState !== 'content') {
+    return null;
+  }
+
+  if (viewState === ViewState.EDIT && !!file) {
+    return (
+      <CodeViewer
+        className="rounded-8 border-bd-primary dark:selection:bg-bg-accent/20 border py-4"
+        content={file}
+        language={getSupportedLanguage(language || '')}
+        theme={isDarkTheme ? 'gitverse-dark' : 'gitverse-light'}
+        fallbackTheme="gitverse-light"
+        scrollToLine={lineNumber}
+        onCopyLink={handleCopyClick}
+        isScrollEnabled
+        scrollMargin={265}
+      />
+    );
+  }
+
+  return (
+    <div className="rounded-8 border-bd-primary border">
+      <Markup
+        type={fileType}
+        className="p-8"
+        context={{
+          owner: user,
+          repo,
+          filepath,
+          branch: !isTag ? refName : undefined,
+          tag: isTag ? refName : undefined,
+        }}
+      >
+        {file}
+      </Markup>
+    </div>
+  );
+};'use client';
+import { ViewState } from '@/features/edit/control-md-view-state';
+import { FC, useCallback } from 'react';
+import { ContentFileViewerProps } from '@/widgets/content/types';
+
+import { useTheme } from '@/shared/lib/theme-context';
+
+
+import { CodeViewer } from '@sbt_gitverse/code-editor/modules/CodeViewer/index';
+import { useRouterFn } from '@/shared/hooks/use-router-fn';
+import copyToClipboard from 'copy-to-clipboard';
+import { useBlobContext } from '../lib/blob-context';
+import { Markup } from '@/widgets/markup';
+import { getSupportedLanguage } from '@sbt_gitverse/code-editor/utils/getSupportedLanguage';
+
+import { getDocumentFormatByFileName } from '@/widgets/markup/utils';
+
+export const ContentFileViewer: FC<
+  Omit<ContentFileViewerProps, 'repo' | 'user'>
+> = ({ fileContent: file, filePath: filepath, language, viewState, isTag }) => {
+  const { pathname, hash } = useRouterFn();
+  const { resolvedTheme } = useTheme();
+  const { refName, repo, user } = useBlobContext();
+  const fileType = getDocumentFormatByFileName(filepath);
+  const isDarkTheme = resolvedTheme === 'dark';
+  const lineNumber = Number(hash.match(/\d+$/)?.[0] ?? 0);
+
+  const handleCopyClick = useCallback(
+    (line: number) => {
+      copyToClipboard(
+        `${window.location.origin}${pathname}?v=${viewState}#line-${line + 1}`,
+      );
+    },
+    [pathname, viewState],
+  );
+
+  if ((!file || !language) && viewState !== 'content') {
+    return null;
+  }
+
+  if (viewState === ViewState.EDIT && !!file) {
+    return (
+      <CodeViewer
+        className="rounded-8 border-bd-primary dark:selection:bg-bg-accent/20 border py-4"
+        content={file}
+        language={getSupportedLanguage(language || '')}
+        theme={isDarkTheme ? 'gitverse-dark' : 'gitverse-light'}
+        fallbackTheme="gitverse-light"
+        scrollToLine={lineNumber}
+        onCopyLink={handleCopyClick}
+        isScrollEnabled
+        scrollMargin={265}
+      />
+    );
+  }
+
+  return (
+    <div className="rounded-8 border-bd-primary border">
+      <Markup
+        type={fileType}
+        className="p-8"
+        context={{
+          owner: user,
+          repo,
+          filepath,
+          branch: !isTag ? refName : undefined,
+          tag: isTag ? refName : undefined,
+        }}
+      >
+        {file}
+      </Markup>
+    </div>
+  );
+};'use client';
+import { ViewState } from '@/features/edit/control-md-view-state';
+import { FC, useCallback } from 'react';
+import { ContentFileViewerProps } from '@/widgets/content/types';
+
+import { useTheme } from '@/shared/lib/theme-context';
+
+
+import { CodeViewer } from '@sbt_gitverse/code-editor/modules/CodeViewer/index';
+import { useRouterFn } from '@/shared/hooks/use-router-fn';
+import copyToClipboard from 'copy-to-clipboard';
+import { useBlobContext } from '../lib/blob-context';
+import { Markup } from '@/widgets/markup';
+import { getSupportedLanguage } from '@sbt_gitverse/code-editor/utils/getSupportedLanguage';
+
+import { getDocumentFormatByFileName } from '@/widgets/markup/utils';
+
+export const ContentFileViewer: FC<
+  Omit<ContentFileViewerProps, 'repo' | 'user'>
+> = ({ fileContent: file, filePath: filepath, language, viewState, isTag }) => {
+  const { pathname, hash } = useRouterFn();
+  const { resolvedTheme } = useTheme();
+  const { refName, repo, user } = useBlobContext();
+  const fileType = getDocumentFormatByFileName(filepath);
+  const isDarkTheme = resolvedTheme === 'dark';
+  const lineNumber = Number(hash.match(/\d+$/)?.[0] ?? 0);
+
+  const handleCopyClick = useCallback(
+    (line: number) => {
+      copyToClipboard(
+        `${window.location.origin}${pathname}?v=${viewState}#line-${line + 1}`,
+      );
+    },
+    [pathname, viewState],
+  );
+
+  if ((!file || !language) && viewState !== 'content') {
+    return null;
+  }
+
+  if (viewState === ViewState.EDIT && !!file) {
+    return (
+      <CodeViewer
+        className="rounded-8 border-bd-primary dark:selection:bg-bg-accent/20 border py-4"
+        content={file}
+        language={getSupportedLanguage(language || '')}
+        theme={isDarkTheme ? 'gitverse-dark' : 'gitverse-light'}
+        fallbackTheme="gitverse-light"
+        scrollToLine={lineNumber}
+        onCopyLink={handleCopyClick}
+        isScrollEnabled
+        scrollMargin={265}
+      />
+    );
+  }
+
+  return (
+    <div className="rounded-8 border-bd-primary border">
+      <Markup
+        type={fileType}
+        className="p-8"
+        context={{
+          owner: user,
+          repo,
+          filepath,
+          branch: !isTag ? refName : undefined,
+          tag: isTag ? refName : undefined,
+        }}
+      >
+        {file}
+      </Markup>
+    </div>
+  );
+};'use client';
+import { ViewState } from '@/features/edit/control-md-view-state';
+import { FC, useCallback } from 'react';
+import { ContentFileViewerProps } from '@/widgets/content/types';
+
+import { useTheme } from '@/shared/lib/theme-context';
+
+
+import { CodeViewer } from '@sbt_gitverse/code-editor/modules/CodeViewer/index';
+import { useRouterFn } from '@/shared/hooks/use-router-fn';
+import copyToClipboard from 'copy-to-clipboard';
+import { useBlobContext } from '../lib/blob-context';
+import { Markup } from '@/widgets/markup';
+import { getSupportedLanguage } from '@sbt_gitverse/code-editor/utils/getSupportedLanguage';
+
+import { getDocumentFormatByFileName } from '@/widgets/markup/utils';
+
+export const ContentFileViewer: FC<
+  Omit<ContentFileViewerProps, 'repo' | 'user'>
+> = ({ fileContent: file, filePath: filepath, language, viewState, isTag }) => {
+  const { pathname, hash } = useRouterFn();
+  const { resolvedTheme } = useTheme();
+  const { refName, repo, user } = useBlobContext();
+  const fileType = getDocumentFormatByFileName(filepath);
+  const isDarkTheme = resolvedTheme === 'dark';
+  const lineNumber = Number(hash.match(/\d+$/)?.[0] ?? 0);
+
+  const handleCopyClick = useCallback(
+    (line: number) => {
+      copyToClipboard(
+        `${window.location.origin}${pathname}?v=${viewState}#line-${line + 1}`,
+      );
+    },
+    [pathname, viewState],
+  );
+
+  if ((!file || !language) && viewState !== 'content') {
+    return null;
+  }
+
+  if (viewState === ViewState.EDIT && !!file) {
+    return (
+      <CodeViewer
+        className="rounded-8 border-bd-primary dark:selection:bg-bg-accent/20 border py-4"
+        content={file}
+        language={getSupportedLanguage(language || '')}
+        theme={isDarkTheme ? 'gitverse-dark' : 'gitverse-light'}
+        fallbackTheme="gitverse-light"
+        scrollToLine={lineNumber}
+        onCopyLink={handleCopyClick}
+        isScrollEnabled
+        scrollMargin={265}
+      />
+    );
+  }
+
+  return (
+    <div className="rounded-8 border-bd-primary border">
+      <Markup
+        type={fileType}
+        className="p-8"
+        context={{
+          owner: user,
+          repo,
+          filepath,
+          branch: !isTag ? refName : undefined,
+          tag: isTag ? refName : undefined,
+        }}
+      >
+        {file}
+      </Markup>
+    </div>
+  );
+};'use client';
+import { ViewState } from '@/features/edit/control-md-view-state';
+import { FC, useCallback } from 'react';
+import { ContentFileViewerProps } from '@/widgets/content/types';
+
+import { useTheme } from '@/shared/lib/theme-context';
+
+
+import { CodeViewer } from '@sbt_gitverse/code-editor/modules/CodeViewer/index';
+import { useRouterFn } from '@/shared/hooks/use-router-fn';
+import copyToClipboard from 'copy-to-clipboard';
+import { useBlobContext } from '../lib/blob-context';
+import { Markup } from '@/widgets/markup';
+import { getSupportedLanguage } from '@sbt_gitverse/code-editor/utils/getSupportedLanguage';
+
+import { getDocumentFormatByFileName } from '@/widgets/markup/utils';
+
+export const ContentFileViewer: FC<
+  Omit<ContentFileViewerProps, 'repo' | 'user'>
+> = ({ fileContent: file, filePath: filepath, language, viewState, isTag }) => {
+  const { pathname, hash } = useRouterFn();
+  const { resolvedTheme } = useTheme();
+  const { refName, repo, user } = useBlobContext();
+  const fileType = getDocumentFormatByFileName(filepath);
+  const isDarkTheme = resolvedTheme === 'dark';
+  const lineNumber = Number(hash.match(/\d+$/)?.[0] ?? 0);
+
+  const handleCopyClick = useCallback(
+    (line: number) => {
+      copyToClipboard(
+        `${window.location.origin}${pathname}?v=${viewState}#line-${line + 1}`,
+      );
+    },
+    [pathname, viewState],
+  );
+
+  if ((!file || !language) && viewState !== 'content') {
+    return null;
+  }
+
+  if (viewState === ViewState.EDIT && !!file) {
+    return (
+      <CodeViewer
+        className="rounded-8 border-bd-primary dark:selection:bg-bg-accent/20 border py-4"
+        content={file}
+        language={getSupportedLanguage(language || '')}
+        theme={isDarkTheme ? 'gitverse-dark' : 'gitverse-light'}
+        fallbackTheme="gitverse-light"
+        scrollToLine={lineNumber}
+        onCopyLink={handleCopyClick}
+        isScrollEnabled
+        scrollMargin={265}
+      />
+    );
+  }
+
+  return (
+    <div className="rounded-8 border-bd-primary border">
+      <Markup
+        type={fileType}
+        className="p-8"
+        context={{
+          owner: user,
+          repo,
+          filepath,
+          branch: !isTag ? refName : undefined,
+          tag: isTag ? refName : undefined,
+        }}
+      >
+        {file}
+      </Markup>
+    </div>
+  );
+};'use client';
+import { ViewState } from '@/features/edit/control-md-view-state';
+import { FC, useCallback } from 'react';
+import { ContentFileViewerProps } from '@/widgets/content/types';
+
+import { useTheme } from '@/shared/lib/theme-context';
+
+
+import { CodeViewer } from '@sbt_gitverse/code-editor/modules/CodeViewer/index';
+import { useRouterFn } from '@/shared/hooks/use-router-fn';
+import copyToClipboard from 'copy-to-clipboard';
+import { useBlobContext } from '../lib/blob-context';
+import { Markup } from '@/widgets/markup';
+import { getSupportedLanguage } from '@sbt_gitverse/code-editor/utils/getSupportedLanguage';
+
+import { getDocumentFormatByFileName } from '@/widgets/markup/utils';
+
+export const ContentFileViewer: FC<
+  Omit<ContentFileViewerProps, 'repo' | 'user'>
+> = ({ fileContent: file, filePath: filepath, language, viewState, isTag }) => {
+  const { pathname, hash } = useRouterFn();
+  const { resolvedTheme } = useTheme();
+  const { refName, repo, user } = useBlobContext();
+  const fileType = getDocumentFormatByFileName(filepath);
+  const isDarkTheme = resolvedTheme === 'dark';
+  const lineNumber = Number(hash.match(/\d+$/)?.[0] ?? 0);
+
+  const handleCopyClick = useCallback(
+    (line: number) => {
+      copyToClipboard(
+        `${window.location.origin}${pathname}?v=${viewState}#line-${line + 1}`,
+      );
+    },
+    [pathname, viewState],
+  );
+
+  if ((!file || !language) && viewState !== 'content') {
+    return null;
+  }
+
+  if (viewState === ViewState.EDIT && !!file) {
+    return (
+      <CodeViewer
+        className="rounded-8 border-bd-primary dark:selection:bg-bg-accent/20 border py-4"
+        content={file}
+        language={getSupportedLanguage(language || '')}
+        theme={isDarkTheme ? 'gitverse-dark' : 'gitverse-light'}
+        fallbackTheme="gitverse-light"
+        scrollToLine={lineNumber}
+        onCopyLink={handleCopyClick}
+        isScrollEnabled
+        scrollMargin={265}
+      />
+    );
+  }
+
+  return (
+    <div className="rounded-8 border-bd-primary border">
+      <Markup
+        type={fileType}
+        className="p-8"
+        context={{
+          owner: user,
+          repo,
+          filepath,
+          branch: !isTag ? refName : undefined,
+          tag: isTag ? refName : undefined,
+        }}
+      >
+        {file}
+      </Markup>
+    </div>
+  );
+};'use client';
+import { ViewState } from '@/features/edit/control-md-view-state';
+import { FC, useCallback } from 'react';
+import { ContentFileViewerProps } from '@/widgets/content/types';
+
+import { useTheme } from '@/shared/lib/theme-context';
+
+
+import { CodeViewer } from '@sbt_gitverse/code-editor/modules/CodeViewer/index';
+import { useRouterFn } from '@/shared/hooks/use-router-fn';
+import copyToClipboard from 'copy-to-clipboard';
+import { useBlobContext } from '../lib/blob-context';
+import { Markup } from '@/widgets/markup';
+import { getSupportedLanguage } from '@sbt_gitverse/code-editor/utils/getSupportedLanguage';
+
+import { getDocumentFormatByFileName } from '@/widgets/markup/utils';
+
+export const ContentFileViewer: FC<
+  Omit<ContentFileViewerProps, 'repo' | 'user'>
+> = ({ fileContent: file, filePath: filepath, language, viewState, isTag }) => {
+  const { pathname, hash } = useRouterFn();
+  const { resolvedTheme } = useTheme();
+  const { refName, repo, user } = useBlobContext();
+  const fileType = getDocumentFormatByFileName(filepath);
+  const isDarkTheme = resolvedTheme === 'dark';
+  const lineNumber = Number(hash.match(/\d+$/)?.[0] ?? 0);
+
+  const handleCopyClick = useCallback(
+    (line: number) => {
+      copyToClipboard(
+        `${window.location.origin}${pathname}?v=${viewState}#line-${line + 1}`,
+      );
+    },
+    [pathname, viewState],
+  );
+
+  if ((!file || !language) && viewState !== 'content') {
+    return null;
+  }
+
+  if (viewState === ViewState.EDIT && !!file) {
+    return (
+      <CodeViewer
+        className="rounded-8 border-bd-primary dark:selection:bg-bg-accent/20 border py-4"
+        content={file}
+        language={getSupportedLanguage(language || '')}
+        theme={isDarkTheme ? 'gitverse-dark' : 'gitverse-light'}
+        fallbackTheme="gitverse-light"
+        scrollToLine={lineNumber}
+        onCopyLink={handleCopyClick}
+        isScrollEnabled
+        scrollMargin={265}
+      />
+    );
+  }
+
+  return (
+    <div className="rounded-8 border-bd-primary border">
+      <Markup
+        type={fileType}
+        className="p-8"
+        context={{
+          owner: user,
+          repo,
+          filepath,
+          branch: !isTag ? refName : undefined,
+          tag: isTag ? refName : undefined,
+        }}
+      >
+        {file}
+      </Markup>
+    </div>
+  );
+};'use client';
+import { ViewState } from '@/features/edit/control-md-view-state';
+import { FC, useCallback } from 'react';
+import { ContentFileViewerProps } from '@/widgets/content/types';
+
+import { useTheme } from '@/shared/lib/theme-context';
+
+
+import { CodeViewer } from '@sbt_gitverse/code-editor/modules/CodeViewer/index';
+import { useRouterFn } from '@/shared/hooks/use-router-fn';
+import copyToClipboard from 'copy-to-clipboard';
+import { useBlobContext } from '../lib/blob-context';
+import { Markup } from '@/widgets/markup';
+import { getSupportedLanguage } from '@sbt_gitverse/code-editor/utils/getSupportedLanguage';
+
+import { getDocumentFormatByFileName } from '@/widgets/markup/utils';
+
+export const ContentFileViewer: FC<
+  Omit<ContentFileViewerProps, 'repo' | 'user'>
+> = ({ fileContent: file, filePath: filepath, language, viewState, isTag }) => {
+  const { pathname, hash } = useRouterFn();
+  const { resolvedTheme } = useTheme();
+  const { refName, repo, user } = useBlobContext();
+  const fileType = getDocumentFormatByFileName(filepath);
+  const isDarkTheme = resolvedTheme === 'dark';
+  const lineNumber = Number(hash.match(/\d+$/)?.[0] ?? 0);
+
+  const handleCopyClick = useCallback(
+    (line: number) => {
+      copyToClipboard(
+        `${window.location.origin}${pathname}?v=${viewState}#line-${line + 1}`,
+      );
+    },
+    [pathname, viewState],
+  );
+
+  if ((!file || !language) && viewState !== 'content') {
+    return null;
+  }
+
+  if (viewState === ViewState.EDIT && !!file) {
+    return (
+      <CodeViewer
+        className="rounded-8 border-bd-primary dark:selection:bg-bg-accent/20 border py-4"
+        content={file}
+        language={getSupportedLanguage(language || '')}
+        theme={isDarkTheme ? 'gitverse-dark' : 'gitverse-light'}
+        fallbackTheme="gitverse-light"
+        scrollToLine={lineNumber}
+        onCopyLink={handleCopyClick}
+        isScrollEnabled
+        scrollMargin={265}
+      />
+    );
+  }
+
+  return (
+    <div className="rounded-8 border-bd-primary border">
+      <Markup
+        type={fileType}
+        className="p-8"
+        context={{
+          owner: user,
+          repo,
+          filepath,
+          branch: !isTag ? refName : undefined,
+          tag: isTag ? refName : undefined,
+        }}
+      >
+        {file}
+      </Markup>
+    </div>
+  );
+};'use client';
+import { ViewState } from '@/features/edit/control-md-view-state';
+import { FC, useCallback } from 'react';
+import { ContentFileViewerProps } from '@/widgets/content/types';
+
+import { useTheme } from '@/shared/lib/theme-context';
+
+
+import { CodeViewer } from '@sbt_gitverse/code-editor/modules/CodeViewer/index';
+import { useRouterFn } from '@/shared/hooks/use-router-fn';
+import copyToClipboard from 'copy-to-clipboard';
+import { useBlobContext } from '../lib/blob-context';
+import { Markup } from '@/widgets/markup';
+import { getSupportedLanguage } from '@sbt_gitverse/code-editor/utils/getSupportedLanguage';
+
+import { getDocumentFormatByFileName } from '@/widgets/markup/utils';
+
+export const ContentFileViewer: FC<
+  Omit<ContentFileViewerProps, 'repo' | 'user'>
+> = ({ fileContent: file, filePath: filepath, language, viewState, isTag }) => {
+  const { pathname, hash } = useRouterFn();
+  const { resolvedTheme } = useTheme();
+  const { refName, repo, user } = useBlobContext();
+  const fileType = getDocumentFormatByFileName(filepath);
+  const isDarkTheme = resolvedTheme === 'dark';
+  const lineNumber = Number(hash.match(/\d+$/)?.[0] ?? 0);
+
+  const handleCopyClick = useCallback(
+    (line: number) => {
+      copyToClipboard(
+        `${window.location.origin}${pathname}?v=${viewState}#line-${line + 1}`,
+      );
+    },
+    [pathname, viewState],
+  );
+
+  if ((!file || !language) && viewState !== 'content') {
+    return null;
+  }
+
+  if (viewState === ViewState.EDIT && !!file) {
+    return (
+      <CodeViewer
+        className="rounded-8 border-bd-primary dark:selection:bg-bg-accent/20 border py-4"
+        content={file}
+        language={getSupportedLanguage(language || '')}
+        theme={isDarkTheme ? 'gitverse-dark' : 'gitverse-light'}
+        fallbackTheme="gitverse-light"
+        scrollToLine={lineNumber}
+        onCopyLink={handleCopyClick}
+        isScrollEnabled
+        scrollMargin={265}
+      />
+    );
+  }
+
+  return (
+    <div className="rounded-8 border-bd-primary border">
+      <Markup
+        type={fileType}
+        className="p-8"
+        context={{
+          owner: user,
+          repo,
+          filepath,
+          branch: !isTag ? refName : undefined,
+          tag: isTag ? refName : undefined,
+        }}
+      >
+        {file}
+      </Markup>
+    </div>
+  );
+};'use client';
+import { ViewState } from '@/features/edit/control-md-view-state';
+import { FC, useCallback } from 'react';
+import { ContentFileViewerProps } from '@/widgets/content/types';
+
+import { useTheme } from '@/shared/lib/theme-context';
+
+
+import { CodeViewer } from '@sbt_gitverse/code-editor/modules/CodeViewer/index';
+import { useRouterFn } from '@/shared/hooks/use-router-fn';
+import copyToClipboard from 'copy-to-clipboard';
+import { useBlobContext } from '../lib/blob-context';
+import { Markup } from '@/widgets/markup';
+import { getSupportedLanguage } from '@sbt_gitverse/code-editor/utils/getSupportedLanguage';
+
+import { getDocumentFormatByFileName } from '@/widgets/markup/utils';
+
+export const ContentFileViewer: FC<
+  Omit<ContentFileViewerProps, 'repo' | 'user'>
+> = ({ fileContent: file, filePath: filepath, language, viewState, isTag }) => {
+  const { pathname, hash } = useRouterFn();
+  const { resolvedTheme } = useTheme();
+  const { refName, repo, user } = useBlobContext();
+  const fileType = getDocumentFormatByFileName(filepath);
+  const isDarkTheme = resolvedTheme === 'dark';
+  const lineNumber = Number(hash.match(/\d+$/)?.[0] ?? 0);
+
+  const handleCopyClick = useCallback(
+    (line: number) => {
+      copyToClipboard(
+        `${window.location.origin}${pathname}?v=${viewState}#line-${line + 1}`,
+      );
+    },
+    [pathname, viewState],
+  );
+
+  if ((!file || !language) && viewState !== 'content') {
+    return null;
+  }
+
+  if (viewState === ViewState.EDIT && !!file) {
+    return (
+      <CodeViewer
+        className="rounded-8 border-bd-primary dark:selection:bg-bg-accent/20 border py-4"
+        content={file}
+        language={getSupportedLanguage(language || '')}
+        theme={isDarkTheme ? 'gitverse-dark' : 'gitverse-light'}
+        fallbackTheme="gitverse-light"
+        scrollToLine={lineNumber}
+        onCopyLink={handleCopyClick}
+        isScrollEnabled
+        scrollMargin={265}
+      />
+    );
+  }
+
+  return (
+    <div className="rounded-8 border-bd-primary border">
+      <Markup
+        type={fileType}
+        className="p-8"
+        context={{
+          owner: user,
+          repo,
+          filepath,
+          branch: !isTag ? refName : undefined,
+          tag: isTag ? refName : undefined,
+        }}
+      >
+        {file}
+      </Markup>
+    </div>
+  );
+};'use client';
+import { ViewState } from '@/features/edit/control-md-view-state';
+import { FC, useCallback } from 'react';
+import { ContentFileViewerProps } from '@/widgets/content/types';
+
+import { useTheme } from '@/shared/lib/theme-context';
+
+
+import { CodeViewer } from '@sbt_gitverse/code-editor/modules/CodeViewer/index';
+import { useRouterFn } from '@/shared/hooks/use-router-fn';
+import copyToClipboard from 'copy-to-clipboard';
+import { useBlobContext } from '../lib/blob-context';
+import { Markup } from '@/widgets/markup';
+import { getSupportedLanguage } from '@sbt_gitverse/code-editor/utils/getSupportedLanguage';
+
+import { getDocumentFormatByFileName } from '@/widgets/markup/utils';
+
+export const ContentFileViewer: FC<
+  Omit<ContentFileViewerProps, 'repo' | 'user'>
+> = ({ fileContent: file, filePath: filepath, language, viewState, isTag }) => {
+  const { pathname, hash } = useRouterFn();
+  const { resolvedTheme } = useTheme();
+  const { refName, repo, user } = useBlobContext();
+  const fileType = getDocumentFormatByFileName(filepath);
+  const isDarkTheme = resolvedTheme === 'dark';
+  const lineNumber = Number(hash.match(/\d+$/)?.[0] ?? 0);
+
+  const handleCopyClick = useCallback(
+    (line: number) => {
+      copyToClipboard(
+        `${window.location.origin}${pathname}?v=${viewState}#line-${line + 1}`,
+      );
+    },
+    [pathname, viewState],
+  );
+
+  if ((!file || !language) && viewState !== 'content') {
+    return null;
+  }
+
+  if (viewState === ViewState.EDIT && !!file) {
+    return (
+      <CodeViewer
+        className="rounded-8 border-bd-primary dark:selection:bg-bg-accent/20 border py-4"
+        content={file}
+        language={getSupportedLanguage(language || '')}
+        theme={isDarkTheme ? 'gitverse-dark' : 'gitverse-light'}
+        fallbackTheme="gitverse-light"
+        scrollToLine={lineNumber}
+        onCopyLink={handleCopyClick}
+        isScrollEnabled
+        scrollMargin={265}
+      />
+    );
+  }
+
+  return (
+    <div className="rounded-8 border-bd-primary border">
+      <Markup
+        type={fileType}
+        className="p-8"
+        context={{
+          owner: user,
+          repo,
+          filepath,
+          branch: !isTag ? refName : undefined,
+          tag: isTag ? refName : undefined,
+        }}
+      >
+        {file}
+      </Markup>
+    </div>
+  );
+};
