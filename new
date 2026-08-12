@@ -1,0 +1,170 @@
+# ============================================================
+# Файл: caesar_cipher_tool.py
+# Назначение: Инструмент для шифрования/дешифрования текста
+#              шифром Цезаря с консольным интерфейсом.
+# Автор: Генератор кода
+# Версия: 1.0
+# ============================================================
+
+import os
+import sys
+import time
+
+# Константы для настройки программы
+ALPHABET_RU = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'
+ALPHABET_EN = 'abcdefghijklmnopqrstuvwxyz'
+DEFAULT_SHIFT = 3
+HISTORY_FILE = 'cipher_history.txt'
+
+
+def clear_screen():
+    """Очистка экрана терминала."""
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
+def print_header():
+    """Вывод заголовка программы."""
+    print("=" * 50)
+    print("   КРИПТОГРАФИЧЕСКИЙ ИНСТРУМЕНТ - ШИФР ЦЕЗАРЯ")
+    print("=" * 50)
+    print()
+
+
+def get_language(text):
+    """Определение языка текста (русский или английский)."""
+    for char in text.lower():
+        if char in ALPHABET_RU:
+            return 'ru'
+        if char in ALPHABET_EN:
+            return 'en'
+    return 'en'  # по умолчанию
+
+
+def get_alphabet(lang):
+    """Возвращает алфавит для указанного языка."""
+    return ALPHABET_RU if lang == 'ru' else ALPHABET_EN
+
+
+def caesar_encrypt(text, shift, lang=None):
+    """Шифрование текста шифром Цезаря."""
+    if lang is None:
+        lang = get_language(text)
+    alphabet = get_alphabet(lang)
+    result = []
+    shift = shift % len(alphabet)
+    for char in text:
+        lower_char = char.lower()
+        if lower_char in alphabet:
+            idx = alphabet.index(lower_char)
+            new_idx = (idx + shift) % len(alphabet)
+            new_char = alphabet[new_idx]
+            result.append(new_char.upper() if char.isupper() else new_char)
+        else:
+            result.append(char)
+    return ''.join(result)
+
+
+def caesar_decrypt(text, shift, lang=None):
+    """Дешифрование текста шифром Цезаря."""
+    if lang is None:
+        lang = get_language(text)
+    alphabet = get_alphabet(lang)
+    result = []
+    shift = shift % len(alphabet)
+    for char in text:
+        lower_char = char.lower()
+        if lower_char in alphabet:
+            idx = alphabet.index(lower_char)
+            new_idx = (idx - shift) % len(alphabet)
+            new_char = alphabet[new_idx]
+            result.append(new_char.upper() if char.isupper() else new_char)
+        else:
+            result.append(char)
+    return ''.join(result)
+
+
+def save_history(original, encrypted, shift):
+    """Сохранение истории операций в файл."""
+    with open(HISTORY_FILE, 'a', encoding='utf-8') as f:
+        f.write(f"[{time.ctime()}] Сдвиг: {shift}\n")
+        f.write(f"Исходный: {original}\n")
+        f.write(f"Результат: {encrypted}\n")
+        f.write("-" * 40 + "\n")
+
+
+def show_history():
+    """Показать историю операций из файла."""
+    if not os.path.exists(HISTORY_FILE):
+        print("История пока пуста.")
+        return
+    with open(HISTORY_FILE, 'r', encoding='utf-8') as f:
+        content = f.read()
+        print(content if content else "История пуста.")
+
+
+def main_menu():
+    """Главное меню программы."""
+    while True:
+        clear_screen()
+        print_header()
+        print("1. Зашифровать текст")
+        print("2. Расшифровать текст")
+        print("3. Показать историю операций")
+        print("4. Очистить историю")
+        print("5. Выйти")
+        print("-" * 50)
+
+        choice = input("Ваш выбор (1-5): ").strip()
+
+        if choice == '1':
+            text = input("Введите текст для шифрования: ")
+            shift = int(input("Введите сдвиг (целое число): ") or DEFAULT_SHIFT)
+            encrypted = caesar_encrypt(text, shift)
+            print(f"\nЗашифрованный текст: {encrypted}")
+            save_history(text, encrypted, shift)
+            input("\nНажмите Enter для продолжения...")
+
+        elif choice == '2':
+            text = input("Введите текст для дешифрования: ")
+            shift = int(input("Введите сдвиг (целое число): ") or DEFAULT_SHIFT)
+            decrypted = caesar_decrypt(text, shift)
+            print(f"\nРасшифрованный текст: {decrypted}")
+            save_history(text, decrypted, shift)
+            input("\nНажмите Enter для продолжения...")
+
+        elif choice == '3':
+            clear_screen()
+            print_header()
+            print("ИСТОРИЯ ОПЕРАЦИЙ:\n")
+            show_history()
+            input("\nНажмите Enter для продолжения...")
+
+        elif choice == '4':
+            if os.path.exists(HISTORY_FILE):
+                os.remove(HISTORY_FILE)
+                print("История очищена.")
+            else:
+                print("Файл истории не существует.")
+            input("\nНажмите Enter для продолжения...")
+
+        elif choice == '5':
+            print("До свидания!")
+            sys.exit(0)
+
+        else:
+            print("Неверный выбор. Попробуйте снова.")
+            time.sleep(1)
+
+
+# Точка входа в программу
+if __name__ == "__main__":
+    try:
+        main_menu()
+    except KeyboardInterrupt:
+        print("\nПрограмма прервана пользователем.")
+        sys.exit(0)
+    except Exception as e:
+        print(f"Произошла ошибка: {e}")
+        sys.exit(1)
+
+# Конец файла
